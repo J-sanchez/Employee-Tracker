@@ -3,14 +3,11 @@ const router = express.Router();
 const db = require('../../db/database');
 const inputCheck = require('../../utils/inputCheck');
 
-// Get all candidates
-router.get('/candidates', (req, res) => {
-    const sql = `SELECT candidates.*, parties.name 
-    AS party_name 
-    FROM candidates 
-    LEFT JOIN parties 
-    ON candidates.party_id = parties.id`;
+// Get all departments
+router.get('/department', (req, res) => {
+    const sql = `SELECT * FROM department`;
     const params = [];
+  
     db.all(sql, params, (err, rows) => {
       if (err) {
         res.status(500).json({ error: err.message });
@@ -22,17 +19,12 @@ router.get('/candidates', (req, res) => {
         data: rows
       });
     });
-  });
+});
 
-// Get single candidate
-router.get('/candidate/:id', (req, res) => {
-    const sql = `SELECT candidates.*, parties.name 
-             AS party_name 
-             FROM candidates 
-             LEFT JOIN parties 
-             ON candidates.party_id = parties.id 
-             WHERE candidates.id = ?`;
+router.get('/department/:id', (req, res) => {
+    const sql = `SELECT * FROM department WHERE id = ?`;
     const params = [req.params.id];
+  
     db.get(sql, params, (err, row) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -44,44 +36,44 @@ router.get('/candidate/:id', (req, res) => {
         data: row
       });
     });
-  });
+});
 
-  router.post('/candidate', ({ body }, res) => {
-    const errors = inputCheck(body, 'first_name', 'last_name', 'industry_connected');
+router.post('/department', ({ body }, res) => {
+    const errors = inputCheck(body, 'name');
+
+    if (errors) {
+    res.status(400).json({ error: errors });
+    return;
+    }
+    
+    const sql = `INSERT INTO department (name) VALUES (?)`;
+    const params = [body.name];
+  
+    db.run(sql, params, function(err, data) {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+  
+      res.json({
+        message: 'success',
+        data: body,
+        id: this.lastID
+      });
+    });
+});
+
+router.put('/department/:id', (req, res) => {
+    const errors = inputCheck(req.body, 'name');
     if (errors) {
       res.status(400).json({ error: errors });
       return;
     }
-    const sql = `INSERT INTO candidates (first_name, last_name, industry_connected) 
-    VALUES (?,?,?)`;
-    const params = [body.first_name, body.last_name, body.industry_connected];
-    // ES5 function, not arrow function, to use `this`
-    db.run(sql, params, function(err, result) {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-    }
-
-    res.json({
-        message: 'success',
-        data: body,
-        id: this.lastID
-        });
-    });
-
-});
-router.put('/candidate/:id', (req, res) => {
-    const errors = inputCheck(req.body, 'party_id');
-
-if (errors) {
-  res.status(400).json({ error: errors });
-  return;
-}
-    const sql = `UPDATE candidates SET party_id = ? 
-                 WHERE id = ?`;
-    const params = [req.body.party_id, req.params.id];
-  
-    db.run(sql, params, function(err, result) {
+    
+    const sql = `UPDATE department SET name = ? WHERE id = ?`;
+    const params = [req.body.name, req.params.id];
+    // use ES5 function, not arrow to use this 
+    db.run(sql, params, function(err, data) {
       if (err) {
         res.status(400).json({ error: err.message });
         return;
@@ -93,23 +85,19 @@ if (errors) {
         changes: this.changes
       });
     });
-  });
-
-  // Delete a candidate
-router.delete('/candidate/:id', (req, res) => {
-    const sql = `DELETE FROM candidates WHERE id = ?`;
-    const params = [req.params.id];
-    db.run(sql, params, function(err, result) {
+});
+  
+router.delete('/department/:id', (req, res) => {
+    const sql = `DELETE FROM department WHERE id = ?`;
+  
+    db.run(sql, req.params.id, function(err, result) {
       if (err) {
         res.status(400).json({ error: res.message });
         return;
       }
   
-      res.json({
-        message: 'successfully deleted',
-        changes: this.changes
-      });
+      res.json({ message: 'deleted', changes: this.changes });
     });
-  });
+});
 
-  module.exports = router;
+module.exports = router;
