@@ -8,7 +8,7 @@
     "migrate": "sqlite3 db/employer.db < db/schema.sql",
     "seed": "sqlite3 db/employer.db < db/seeds.sql",
     "db": "sqlite3 db/employer.db",
-    "start": "nodemon server.js"
+    "start": "nodemon ftmf.js"
   },
   "repository": {
     "type": "git",
@@ -27,8 +27,8 @@
     "express": "^4.17.1",
     "inquirer": "^7.3.3",
     "mysql2": "^2.2.5",
-    "sequelize": "^6.3.5",
     "nodemon": "^2.0.6",
+    "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"
   }
 }

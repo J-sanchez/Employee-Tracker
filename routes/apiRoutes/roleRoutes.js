@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/database');
+const db = require('../../config/connection');
 
-router.get('/role', (req, res) => {
-    const sql = `SELECT * FROM role`;
+router.get('/roles', (req, res) => {
+    const sql = `SELECT * FROM roles`;
     const params = [];
     db.all(sql, params, (err, rows) => {
       if (err) {
@@ -18,8 +18,8 @@ router.get('/role', (req, res) => {
     });
 });
 
-router.get('/role/:id', (req, res) => {
-    const sql = `SELECT * FROM role WHERE id = ?`;
+router.get('/roles/:id', (req, res) => {
+    const sql = `SELECT * FROM roles WHERE id = ?`;
     const params = [req.params.id];
     db.get(sql, params, (err, row) => {
       if (err) {
@@ -34,8 +34,8 @@ router.get('/role/:id', (req, res) => {
     });
 });
 
-router.delete('/role/:id', (req, res) => {
-    const sql = `DELETE FROM role WHERE id = ?`;
+router.delete('/roles/:id', (req, res) => {
+    const sql = `DELETE FROM roles WHERE id = ?`;
     const params = [req.params.id];
     db.run(sql, params, function(err, result) {
       if (err) {
