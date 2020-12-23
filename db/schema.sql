@@ -3,9 +3,9 @@ CREATE DATABASE employer;
 USE employer;
 
 
--- DROP TABLE IF EXISTS department;
--- DROP TABLE IF EXISTS roles;
--- DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS employee;
 
 CREATE TABLE department(
     id INT NOT NULL AUTO_INCREMENT,
@@ -35,3 +35,5 @@ CREATE TABLE employee(
     FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE CASCADE
 
 );
+
+SET FOREIGN_KEY_CHECKS=0;

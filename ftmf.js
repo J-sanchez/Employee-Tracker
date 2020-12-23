@@ -1,9 +1,12 @@
+'use strict'; 
 const inquirer = require('inquirer');
-const Manager = require('./lib/Manager');
-const Employee = require('./lib/Employees');
-const roles = require('./lib/roles');
-const Department = require('./lib/Department');
+// const Manager = require('./lib/Manager');
+// const Employee = require('./lib/Employees');
+// const roles = require('./lib/roles');
+// const Department = require('./lib/Department');
 const connection = require('./config/connection');
+
+require('console.table')
 
 const employeeData = [];
 
@@ -47,19 +50,19 @@ const promptQuestions = () => {
                 viewManager();
             }
             else if (choice.viewAll === 'View roles') {
-                vieeroles();
+                viewroles();
             }
             else if (choice.viewAll === 'Add Department') {
                 addDepartment();
             }
             else if (choice.viewAll === 'Add roles') {
-                addeoles();
+                addRoles();
             }
             else if (choice.viewAll === 'Add Employee') {
                 addEmployee();
             }
             else if (choice.viewAll === 'Update roles') {
-                updeteroles();
+                updateRoles();
             }
         })
 
@@ -90,7 +93,7 @@ const promptQuestions = () => {
     function viewDepartment() {
         console.log('viewing by Department');
         connection.query(
-            `SELECT id, name
+            `SELECT id, department_name
                 FROM department`,
             function (err, res) {
                 if (err) throw err;
@@ -102,7 +105,7 @@ const promptQuestions = () => {
     function viewManager() {
         console.log('viewing managers');
         connection.query(
-            `SELECT first_name, last_name, manager
+            `SELECT first_name, last_name, manager_id
                 FROM employee`,
             function (err, res) {
                 if (err) throw err;
@@ -111,14 +114,14 @@ const promptQuestions = () => {
             });
     };
 
-    function vieeroles() {
+    function viewroles() {
         console.log('Viewing all roles');
         connection.query(
             `SELECT 
                 roles.id AS ID,
                 roles.title AS title,
                 roles.salary AS $ALARY,
-                department.name AS department
+                department_id AS department
                 FROM roles
                 LEFT JOIN department ON roles.department_id = department.id`,
             function (err, res) {
@@ -133,7 +136,7 @@ const promptQuestions = () => {
 
             {
                 type: 'input',
-                name: 'departmentname',
+                name: 'department_name',
                 message: 'Provide a new DEPARTMENT',
                 validate: departmentInput => {
                     if (departmentInput) {
@@ -149,7 +152,7 @@ const promptQuestions = () => {
                 const newDept = storeDept.departmentname
 
                 console.log('updating Department');
-                const sql = `INSERT INTO department (name) VALUES (?)`;
+                const sql = `INSERT INTO department (department_name) VALUES (?)`;
                 const params = [newDept];
                 connection.query(sql, params, function (err, res) {
                     if (err) {
@@ -163,9 +166,9 @@ const promptQuestions = () => {
             })
     };
 
-    function addeoles() {
+    function addRoles() {
         connection.promise().query(`
-        SELECT department.name, department.id FROM department
+        SELECT department_name, department_id FROM department
         `)
         .then(([rows])=> {
             var departments = rows.map(({name, id}) => ({
@@ -283,7 +286,7 @@ const promptQuestions = () => {
                     
 
                     console.log('updating employee');
-                    const sql = `INSERT INTO employee (first_name, last_name, roles_id) VALUES (?, ?, ?)`;
+                    const sql = `INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)`;
                     const params = [firstname, lastname, roleselect];
                     connection.query(sql, params, function (err, res) {
                         if (err) {
@@ -300,11 +303,11 @@ const promptQuestions = () => {
             })
     };
 
-    function updeteroles() {
+    function updateRoles() {
         connection.promise().query(`
         SELECT employee.last_name, employee.id, roles.id, roles.title 
         FROM employee
-        LEFT JOIN roles ON employee.roles_id = roles.id
+        LEFT JOIN roles ON employee.role_id = roles.id
         `)
         .then(([rows])=> {
             var employees = rows.map(({ last_name, id }) => ({
@@ -337,7 +340,7 @@ const promptQuestions = () => {
                 
 
                 console.log('updating roles');
-                const sql = `UPDATE employee SET roles_id = ? WHERE id = ?`;
+                const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
                 const params = [employeelist, roleslist];
                 connection.query(sql, params, function (err, res) {
                     if (err) {

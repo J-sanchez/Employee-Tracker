@@ -8,7 +8,7 @@
     "migrate": "mysql -init db/schema.sql",
     "seed": "mysql db/schema.sql -init db/seeds.sql",
     "db": "mysql db/employer.db",
-    "start": "nodemon ftmf.js"
+    "start": "node ftmf.js"
   },
   "repository": {
     "type": "git",
