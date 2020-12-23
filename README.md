@@ -13,6 +13,8 @@ The application "Employee-Tracker" allows the user to run the ftms.js file in hi
 ## Installation
 The user must clone the github repository. Then run npm install to install the 'node_modules' used. Then create the database on his/her local server named "employer". 
 ## Usage
+![Show database] (assets/EMP_TRCKR.jpg)
+
 ![Video of Usage] (https://drive.google.com/file/d/1GLDuuwk20Th-eqRLXir4XKtiGGH6OZBr/view)
 ## Contributors
 Jonathan C. Sanchez
