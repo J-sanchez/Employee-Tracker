@@ -1,26 +1,26 @@
-INSERT INTO department (name)
+INSERT INTO department (department_name , id)
 VALUES 
-    ('Engineering'),
-    ('Finance'),
-    ('Legal'),
-    ('Sales');
+    ('Engineering' , 1),
+    ('Finance' , 2),
+    ('Legal' , 3),
+    ('Sales' , 4);
 
-INSERT INTO roles (title, salary, department_id)
+INSERT INTO roles(title, salary, department_id)
 VALUES
-    ('Lead Engineer', 150000, 1),
-    ('Software Engineer', 120000, 1),
-    ('Accountant', 125000, 2),
-    ('Lead Legal Counsel', 250000, 3),
-    ('Lawyer', 190000, 3),
-    ('Sales Lead', 100000, 4),
-    ('Salesperson', 80000, 4); 
+('Manager', 100000, 1),
+('Sales Rep', 67000, 2),
+('HR Rep', 72000, 4),
+('Warehouse Worker', 45000, 3),
+('Receptionist', 47000, 6),
+('Accountant', 89000, 7);
 
-INSERT INTO employee (first_name, last_name, roles_id, manager)
+INSERT INTO employee (first_name, last_name, role_id, manager)
 VALUES 
-    ('Posh', 'Spice', 1, NULL), 
-    ('Mel', 'Brown', 2, 'Posh Spice'), 
-    ('Emma', 'Bunton', 3, NULL), 
-    ('Melanie', 'Chisolm', 7, 'Geri Haliwell'), 
-    ('Geri', 'Haliwell', 6, NULL),
-    ('Britney', 'Spears', 5, 'Fleetwood Mac'),
-    ('Fleetwood', 'Mac', 4, NULL);
+('Michael', 'Scott', 1),
+('Pam', 'Beesly', 4),
+('Jim', 'Halpert', 2),
+('Toby', 'Flenderson', 3),
+('Stanley', 'Hudson', 6),
+('Darryl', 'Philbin', 3);
+
+UPDATE `employee_db`.`employees` SET `manager_id` = '1' WHERE (`id` > '1');

@@ -7,7 +7,6 @@ const connection = require('./config/connection');
 
 const employeeData = [];
 
-
 console.log(
         `
         ********************************************************
