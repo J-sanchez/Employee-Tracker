@@ -5,9 +5,9 @@
   "main": "ftmf.js",
   "scripts": {
     "test": "jest",
-    "migrate": "sqlite3 db/employer.db < db/schema.sql",
-    "seed": "node db/employer.db < db/seeds.sql",
-    "db": "sqlite3 db/employer.db",
+    "migrate": "mysql -init db/schema.sql",
+    "seed": "mysql db/schema.sql -init db/seeds.sql",
+    "db": "mysql db/employer.db",
     "start": "nodemon ftmf.js"
   },
   "repository": {

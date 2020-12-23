@@ -42,23 +42,24 @@ const promptQuestions = () => {
             else if (choice.viewAll === 'View Departments') {
                 viewDepartment();
             } 
+
             else if (choice.viewAll === 'View by Manager') {
                 viewManager();
             }
             else if (choice.viewAll === 'View roles') {
-                viewroles();
+                vieeroles();
             }
             else if (choice.viewAll === 'Add Department') {
                 addDepartment();
             }
             else if (choice.viewAll === 'Add roles') {
-                addroles();
+                addeoles();
             }
             else if (choice.viewAll === 'Add Employee') {
                 addEmployee();
             }
             else if (choice.viewAll === 'Update roles') {
-                updateroles();
+                updeteroles();
             }
         })
 
@@ -70,13 +71,13 @@ const promptQuestions = () => {
             employee.id AS ID,
             employee.first_name AS FirstName,
             employee.last_name AS LastName,
-            employee.manager AS Manager,
+            employee.manager_id AS Manager,
             roles.title AS Title, 
             roles.salary AS $alary,
-            department.name AS Department
+            department_name AS Department
             FROM employee
-            LEFT JOIN roles ON employee.roles_id = roles.id
-            LEFT JOIN department ON roles.department_id = department.id
+            LEFT JOIN roles ON employee.role_id = roles.id
+            LEFT JOIN department ON roles.department_id = department_id
             `,
             function (err, res) {
                 if (err) throw err;
@@ -110,7 +111,7 @@ const promptQuestions = () => {
             });
     };
 
-    function viewroles() {
+    function vieeroles() {
         console.log('Viewing all roles');
         connection.query(
             `SELECT 
@@ -162,7 +163,7 @@ const promptQuestions = () => {
             })
     };
 
-    function addroles() {
+    function addeoles() {
         connection.promise().query(`
         SELECT department.name, department.id FROM department
         `)
@@ -299,7 +300,7 @@ const promptQuestions = () => {
             })
     };
 
-    function updateroles() {
+    function updeteroles() {
         connection.promise().query(`
         SELECT employee.last_name, employee.id, roles.id, roles.title 
         FROM employee

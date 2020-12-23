@@ -14,13 +14,13 @@ VALUES
 ('Receptionist', 47000, 6),
 ('Accountant', 89000, 7);
 
-INSERT INTO employee (first_name, last_name, role_id, manager)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES 
-('Michael', 'Scott', 1),
-('Pam', 'Beesly', 4),
-('Jim', 'Halpert', 2),
-('Toby', 'Flenderson', 3),
-('Stanley', 'Hudson', 6),
-('Darryl', 'Philbin', 3);
+('Michael', 'Scott', 1 , NULL),
+('Pam', 'Beesly', 4 , 1),
+('Jim', 'Halpert', 2 , NULL),
+('Toby', 'Flenderson', 3 , 1),
+('Stanley', 'Hudson', 6 , 2),
+('Darryl', 'Philbin', 3 , 1);
 
-UPDATE `employee_db`.`employees` SET `manager_id` = '1' WHERE (`id` > '1');
+UPDATE `employer`. `employee` SET `manager_id` = '1' WHERE (`id` > '1');
